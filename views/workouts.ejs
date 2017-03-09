@@ -1,0 +1,85 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group text-center">
+                <%allWorkouts.forEach(function(workout){%>
+                <a href="#<%=workout.name.toLowerCase()%>"><li class="list-group-item">  <%= workout.name.toUpperCase()%></li></a>
+                <% })%>
+            </div>
+
+        </div>
+        <div class="col-md-7">
+            <% allWorkouts.forEach(function(workout){%>
+           <% var workoutName = workout.name.toUpperCase()%>
+          <% if (workoutName === "IRIS"){%>
+            <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td colspan="2" class="info text-center">
+                            <b><%=workoutName%></b>
+                        </td>
+                    </tr>
+                    </thead>
+                     <tr class="warning">
+                        <td colspan="2">Run 1km</td>
+                    </tr>
+                    <tr>
+                        <td><b> <%=workout.exercices[0].rounds.length%> Rounds</b></td>
+                        <td></td>
+                    </tr>
+
+                    <% workout.exercices.forEach(function(exe){%>
+                    <tr>
+                        <td><%=exe.name%></td>
+                        <td> <%=exe.rounds%></td>
+                    </tr>
+
+
+            <%})%>
+                    <tr class="warning">
+                        <td colspan="2">Run 1km</td>
+                    </tr>
+            </table>
+            <% } else{%>
+
+
+
+            <table class="table table-striped table-bordered table-hover" id="<%=workoutName.toLowerCase()%>">
+                <thead>
+                <tr>
+                    <td colspan="2" class="info text-center">
+                      <b><%=workoutName%></b>
+                    </td>
+                </tr>
+                </thead>
+                <tr>
+                    <%if(workout.exercices[0].rounds.length === 1 ){%>
+                    <td colspan="2"><b> <%=workout.exercices[0].rounds.length%> Round</b></td>
+
+                    <%}else{%>
+                    <td><b> <%=workout.exercices[0].rounds.length%> Rounds</b></td>
+                    <td><b>Round 1 - <%=workout.exercices[0].rounds.length%>  </b></td>
+                    <%}%>
+                </tr>
+
+                <% workout.exercices.forEach(function(exe){%>
+                <tr >
+                    <td><%=exe.name%>  </td>
+                    <td> <%=exe.rounds%></td>
+                </tr>
+
+                <%})%>
+
+
+
+            </table>
+            <%}%>
+            <%})%>
+
+        </div>
+    </div>
+</div>
+
+<% include partials/footer%>

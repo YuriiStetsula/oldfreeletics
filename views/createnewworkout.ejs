@@ -1,0 +1,20 @@
+<% include partials/header%>
+<h4>create new workout</h4>
+
+<form action="/createnewworkout" method="post">
+    workout name : <input type="text" name="workout[name]"><br>
+    <hr>
+    <%= exe%>
+    <%= rounds %>
+    <hr>
+
+    <% for(var i=0; i< (+exe); i++){%>
+    exercise name : <input type="text" name="workout[exercise]"><br>
+        <%for(var j =0; j< (+rounds); j++){%>
+        Rep  <%=j+1%> : <input type="text" name="rounds[round<%=j+1%>]">
+        <%}%>
+    <hr>
+    <% } %>
+
+ <button>OK</button>
+</form>
