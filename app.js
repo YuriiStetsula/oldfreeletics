@@ -11,21 +11,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.set("view engine","ejs")
 
+app.use(express.static(__dirname + "/public"));
+
 mongoose.connect(process.env.DATABASEURL);
 console.log(process.env.DATABASEURL);
 
-// var guideSchema  = new mongoose.Schema({
-//     name : String,
-//     week : [
-//         {
-//             session : Number,
-//             workouts: [
-//                 { }
-//             ]
-//         }
-//
-//     ]
-// })
 
 //==========
 // workouts schema
@@ -48,8 +38,12 @@ var workoutsSchema = new mongoose.Schema({
 
         }
     ]
-})
+});
 
+var Workout = mongoose.model("Workout",workoutsSchema);
+//========
+//Guides schemas
+//=========
 var guideSchema =  new mongoose.Schema({
     week : String,
     sessions: [
@@ -61,9 +55,32 @@ var guideSchema =  new mongoose.Schema({
 })
 
 
+var Strengthguide             = mongoose.model("Strengthguide",guideSchema);
+var Cardioguide               = mongoose.model("Cardioguide",guideSchema);
+var CardioAndStrengthguide    = mongoose.model("CardioAndStrengthguide",guideSchema);
 
-var Workout = mongoose.model("Workout",workoutsSchema)
-var Strengthguide  = mongoose.model("Strengthguide",guideSchema)
+//==========
+//exercises
+//==========
+
+var exerciseSchema = new mongoose.Schema({
+    name : String,
+    description : {
+        fullVersion:{
+            images: Array,
+            text: String
+        },
+        modifiedVersion:{
+            images: Array,
+            text: String
+        }
+    }
+})
+
+var Exercise = mongoose.model("Exercise",exerciseSchema);
+
+
+
 // Workout.remove({},function(err){
 //     if(err){
 //         console.log(err)
@@ -98,52 +115,9 @@ app.get("/",function(req,res){
 
 
 
-// Create new workout
-
-// get num of reps
-app.get("/new",function(req,res){
-
-    res.render("new")
-
-})
-
-app.post("/new",function(req,res){
-
-    var rounds = req.body.rounds;
-    var exe = req.body.exercise;
-    res.render("createnewworkout",{rounds: rounds, exe: exe});
-    console.log(rounds)
-    console.log(exe)
-})
-
-// get workout
-app.post("/createnewworkout",function(req,res){
-    var workout = req.body.workout;
-    var rounds = req.body.rounds;
-
-    var newWorkout = {
-        name : workout.name,
-        exercices: {
-            name: workout.exercise,
-            rounds: rounds
-        }
 
 
 
-    }
-
-    // for(var i = 0; i < workout.exercise.length; i++){
-    //     exercices[workout.exercise[i]] = rounds[i]
-    // }
-
-    //
-    Workout.create(newWorkout)
-    // console.log(workout);
-    // console.log(rounds);
-    // console.log(exerc)
-
-    res.send(newWorkout)
-})
 //show workout
 
 app.get("/workouts",function(req,res){
@@ -175,8 +149,54 @@ app.get("/strength",function(req,res){
         }
     })
 
+});
+
+
+
+app.get("/cardio",function(req,res){
+    Cardioguide.find({},function(err,guide){
+        if(err){
+            console.log(err)
+        }else {
+            console.log(guide)
+            res.render("cardio/index",{guide : guide})
+
+        }
+    })
+
 })
 
+app.get("/cardioandstrength",function(req,res){
+    CardioAndStrengthguide.find({},function(err,guide){
+        if(err){
+            console.log(err)
+        }else {
+            console.log(guide)
+            res.render("cardioandstrength/index",{guide : guide})
+
+        }
+    })
+
+})
+
+//========
+// exercises route
+//=========
+
+app.get("/exercises", function(req,res){
+    Exercise.find({},function(err,exercise){
+        if(err){
+            console.log(err)
+        }else{
+            res.render("exercises/index",{exercise:exercise})
+        }
+    })
+
+});
+
+app.get("/exercises/:id", function(req,res){
+    res.render("exercises/index")
+})
 
 
 app.listen(4001,function(){
