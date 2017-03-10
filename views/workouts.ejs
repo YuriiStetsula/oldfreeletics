@@ -10,7 +10,7 @@
             </div>
 
         </div>
-        <div class="col-md-7">
+        <div class="col-md-8">
             <% allWorkouts.forEach(function(workout){%>
            <% var workoutName = workout.name.toUpperCase()%>
           <% if (workoutName === "IRIS"){%>
@@ -32,7 +32,7 @@
 
                     <% workout.exercices.forEach(function(exe){%>
                     <tr>
-                        <td><%=exe.name%></td>
+                        <td><a href="/exercises/<%=exe.name.toLowerCase()%>"><%=exe.name%></a></td>
                         <td> <%=exe.rounds%></td>
                     </tr>
 
@@ -65,8 +65,8 @@
                 </tr>
 
                 <% workout.exercices.forEach(function(exe){%>
-                <tr >
-                    <td><%=exe.name%>  </td>
+                <tr>
+                    <td><a href="/exercises/#<%=exe.name.toLowerCase()%>"><%=exe.name%></a></td>
                     <td> <%=exe.rounds%></td>
                 </tr>
 

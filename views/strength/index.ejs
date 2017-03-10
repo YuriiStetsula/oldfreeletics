@@ -18,9 +18,9 @@
             </div>
 
             <div class="col-md-7">
-                <div class="panel panel-primary">
-                    <%guide.forEach(function(week){%>
 
+                    <%guide.forEach(function(week){%>
+                <div class="panel panel-primary">
                     <div class="panel-heading" id="week<%=week.week%>"> <span class="lead">Week  <%=week.week%></span>  </div>
                     <div class="panel-body">
                         <%week.sessions.forEach(function(session){%>
@@ -45,8 +45,9 @@
 
 
                     </div>
-                    <%})%>
                 </div>
+                    <%})%>
+
             </div>
         </div>
     </div>
