@@ -1,59 +1,75 @@
 <% include ../partials/header%>
 
+<div class="wrapper">
 
     <div class="container">
-        <div class="col-md-3">
-            <div class="list-group text-center">
-                <%exercise.forEach(function(exrs){%>
-                <%  if(exrs.name.search(/max/i) !== -1){%>
-                <a href="#max"><li class="list-group-item">  <%= exrs.name.toUpperCase()%></li></a>
-                <% }else{%>
-                <a href="#<%=exrs.name.toLowerCase().replace(" ","")%>"><li class="list-group-item">  <%= exrs.name.toUpperCase()%></li></a>
-                <%    }%>
-                <% })%>
-            </div>
-        </div>
-       <div class="col-md-8">
-           <%exercise.forEach(function(exrs){ %>
-
-                    <%if(exrs.name.search(/max/) === -1){%>
-           <div class="panel panel-primary" id="<%=exrs.name.toLowerCase().replace(" ","")%>">
-               <div class="panel-heading"><span class="lead"><%=exrs.name.toUpperCase()%></span></div>
-               <div class="panel-body brownBackground">
-                   <p><img class="img-responsive" src="<%=exrs.description.fullVersion.images[0]%>"></p>
-                   <p><%-exrs.description.fullVersion.text%></p>
-
-                   <%if(exrs.description.modifiedVersion.text ){%>
-
-                   <p class="lead">MODIFIED VERSION</p>
-                   <p> <img class="img-responsive"  src="<%=exrs.description.modifiedVersion.images[0]%>"></p>
-                   <p ><%=exrs.description.modifiedVersion.text%></p>
-                   <% }%>
+        <div class="row">
 
 
-               </div>
-           </div>
+                <div class="col-md-3">
+                    <div class="list-group text-center" id="fixedNav">
+                        <%exercise.forEach(function(exrs){%>
+                        <%  if(exrs.name.search(/max/i) !== -1){%>
+                        <a href="#max"><li class="list-group-item">  <%= exrs.name.toUpperCase()%></li></a>
+                        <% }else{%>
+                        <a href="#<%=exrs.name.toLowerCase().replace(" ","")%>"><li class="list-group-item">  <%= exrs.name.toUpperCase()%></li></a>
+                        <%    }%>
+                        <% })%>
+                    </div>
+                </div>
 
+
+            <div class="col-md-7 col-md-offset-1">
+                <%exercise.forEach(function(exrs){ %>
+
+                <%if(exrs.name.search(/max/) === -1){%>
+                <div class="content-wrapper">
+                    <div class="id" id="<%=exrs.name.toLowerCase().replace(" ","")%>"></div>
+                    <div class="panel panel-primary" >
+                        <div class="panel-heading"><span class="lead"><%=exrs.name.toUpperCase()%></span></div>
+                        <div class="panel-body brownBackground">
+                            <p><img class="img-responsive" src="<%=exrs.description.fullVersion.images[0]%>"></p>
+                            <p><%-exrs.description.fullVersion.text%></p>
+
+                            <%if(exrs.description.modifiedVersion.text ){%>
+
+                            <p class="lead">MODIFIED VERSION</p>
+                            <p> <img class="img-responsive"  src="<%=exrs.description.modifiedVersion.images[0]%>"></p>
+                            <p ><%=exrs.description.modifiedVersion.text%></p>
+                            <% }%>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <%}%>
+                <%})%>
+
+                <!--MAX  EXERCISE CONTAINER -->
+                <div class="panel panel-primary" id="max">
+                    <div class="panel-heading"><span class="lead">MAX</span></div>
+                    <%exercise.forEach(function(exrs){ %>
+                    <%if(exrs.name.search(/max/) !== -1){%>
+                    <div class="panel-body brownBackground">
+                        <p class="lead"><%=exrs.name.toUpperCase()%></p>
+                        <p><img class="img-responsive" src="<%=exrs.description.fullVersion.images[0]%>"></p>
+                        <p><%-exrs.description.fullVersion.text%></p>
+                    </div>
 
                     <%}%>
-           <%})%>
+                    <%})%>
+                </div>
+                <!--MAX  EXERCISE CONTAINER END-->
+            </div>
 
-          <!--MAX  EXERCISE CONTAINER -->
-           <div class="panel panel-primary" id="max">
-               <div class="panel-heading"><span class="lead">MAX</span></div>
-           <%exercise.forEach(function(exrs){ %>
-               <%if(exrs.name.search(/max/) !== -1){%>
-               <div class="panel-body brownBackground">
-                   <p class="lead"><%=exrs.name.toUpperCase()%></p>
-                   <p><img class="img-responsive" src="<%=exrs.description.fullVersion.images[0]%>"></p>
-                   <p><%-exrs.description.fullVersion.text%></p>
-               </div>
+        </div>
 
-               <%}%>
-               <%})%>
-           </div>
-           <!--MAX  EXERCISE CONTAINER END-->
-       </div>
 
     </div>
+
+</div>
+
 <% include ../partials/footer%>

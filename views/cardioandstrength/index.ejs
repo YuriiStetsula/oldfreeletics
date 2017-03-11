@@ -2,54 +2,63 @@
 
 
 
+<div class="wrapper">
 
 
-<div class="container">
-    <div class="row">
+    <div class="container">
+        <div class="row">
 
-        <div class="col-md-3" >
-            <h1>cardio & strength guide</h1>
-            <div  class="list-group text-center">
-                <%guide.forEach(function(week){%>
-                <a href="#week<%=week.week%>"><li class="list-group-item"> week   <%=week.week%></li></a>
-                <% })%>
-            </div>
+            <div class="col-md-3" >
 
-        </div>
-
-        <div class="col-md-7">
-
-                <%guide.forEach(function(week){%>
-            <div class="panel panel-primary">
-                <div class="panel-heading" id="week<%=week.week%>"> <span class="lead">Week  <%=week.week%></span>  </div>
-                <div class="panel-body">
-                    <%week.sessions.forEach(function(session){%>
-                    <p class="lead">Session <%=session.session%></p>
-
-                    <%  for(val in session.exercises){%>
-
-                    <%if (val.search(/break/) === -1 ){%>
-                    <% if(session.exercises[val].search(/max/i) !== -1){%>
-                    <a href="workouts/#max"><%= session.exercises[val].toUpperCase()%></a>
-                    <% }else{ %>
-                    <a href="workouts/#<%= session.exercises[val].toLowerCase()%>"><%= session.exercises[val].toUpperCase()%></a>
-                    <% } %>
-                    <%}else{%>
-                    <span class="text-warning"><%= session.exercises[val]%></span>
-                    <%}%>
-
-                    <%   }%>
-                    <%  })%>
-
-
-
-
+                <div  class="list-group text-center " id="fixedNav">
+                    <h1>Cardio & strength guide</h1>
+                    <%guide.forEach(function(week){%>
+                    <a href="#week<%=week.week%>"><li class="list-group-item"> week   <%=week.week%></li></a>
+                    <% })%>
                 </div>
+
             </div>
+
+            <div class="col-md-offset-1 col-md-7">
+
+                <%guide.forEach(function(week){%>
+                <div class="content-wrapper">
+                    <div class="id" id="week<%=week.week%>"></div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading" > <span class="lead">Week  <%=week.week%></span>  </div>
+                        <div class="panel-body">
+                            <%week.sessions.forEach(function(session){%>
+                            <p class="lead">Session <%=session.session%></p>
+
+                            <%  for(val in session.exercises){%>
+
+                            <%if (val.search(/break/) === -1 ){%>
+                            <% if(session.exercises[val].search(/max/i) !== -1){%>
+                            <a href="workouts/#max"><%= session.exercises[val].toUpperCase()%></a>
+                            <% }else{ %>
+                            <a href="workouts/#<%= session.exercises[val].toLowerCase()%>"><%= session.exercises[val].toUpperCase()%></a>
+                            <% } %>
+                            <%}else{%>
+                            <span class="text-warning"><%= session.exercises[val]%></span>
+                            <%}%>
+
+                            <%   }%>
+                            <%  })%>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
                 <%})%>
 
+            </div>
         </div>
     </div>
+
 </div>
+
 
 <% include ../partials/footer%>
