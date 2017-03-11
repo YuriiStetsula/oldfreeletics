@@ -1,4 +1,31 @@
+.wrapper{
+    padding-top: 70px;
+}
 .brownBackground {
     background-color: #101211;
     color: #fff;
+}
+
+.fixed{
+    position : fixed;
+    width : 250px;
+    top: 0;
+}
+
+.id {
+    height:70px;
+    visibility: hidden;
+}
+
+.list-group{
+    margin-top:70px;
+}
+
+.list-group a {
+    text-decoration: none;
+}
+
+.list-group li:hover {
+    color: black;
+    background: #d9edf7;
 }
