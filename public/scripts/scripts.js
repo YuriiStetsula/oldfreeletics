@@ -83,135 +83,87 @@
 
     });
 
+// fix navbar
+
+
+
 
     window.addEventListener("scroll",fixNavbar);
 
+
+        function bind (){
+            // adding styles for nailing
+            navbarMenu.classList.remove("relative");
+            navbarMenu.classList.add("fixed");
+            navbarMenu.style = "";
+            window.removeEventListener("scroll",fixNavbar);
+            window.addEventListener("scroll",unfixNavBar)
+        }
+
     function fixNavbar() {
-
+        // getting navbar height
         var elHeight = navbarMenu.clientHeight;
+        // cheking if client width is grater than 990px
        if(listenTo.clientWidth > 990){
+           // cheking if element height is grater than document height
            if (elHeight > listenTo.documentheight){
-
+               // cheking if scrolling down , binding to bottom
                if(scrollDown && navbarMenu.getBoundingClientRect().bottom <  listenTo.documentheight) {
-
-
-                   navbarMenu.classList.remove("relative");
-                   navbarMenu.classList.add("fixed");
-                   navbarMenu.style = "";
+                   bind()
                    navbarMenu.style.bottom = "0px";
-
                    fixedBottom = true;
                    fixedTop = false;
-                   window.removeEventListener("scroll",fixNavbar);
-                   window.addEventListener("scroll",unfixNavBar)
-
+                   // cheking if scrolling up , binding to top
                }else if ( srollUp && navbarMenu.getBoundingClientRect().top > 70){
-
-
-                   navbarMenu.classList.remove("relative");
-                   navbarMenu.classList.add("fixed");
-                   navbarMenu.style = "";
+                   bind()
                    navbarMenu.style.top = "0px";
                    fixedBottom = false;
                    fixedTop = true;
-                   window.removeEventListener("scroll",fixNavbar)
-                   window.addEventListener("scroll",unfixNavBar)
-
                }
-
-
+               // if navbar height is less than document height
            }else  {
+               // binding to top
                if(scrollDown ){
-                   console.log("equal!!");
-                   navbarMenu.classList.add("fixed");
+                   bind()
                    navbarMenu.style.top = "0px"
-
-                   window.removeEventListener("scroll",fixNavbar)
-                   window.addEventListener("scroll",unfixNavBar)
+                   // nailing to top when navbar riched footer
                }else if ( srollUp && navbarMenu.getBoundingClientRect().top > 70){
-
-
-                   navbarMenu.classList.remove("relative");
-                   navbarMenu.classList.add("fixed");
-                   navbarMenu.style = "";
+                   bind()
                    navbarMenu.style.top = "0px";
-
-                   window.removeEventListener("scroll",fixNavbar)
-                   window.addEventListener("scroll",unfixNavBar)
-
                }
            }
-
        }
     }
 
-    // else if ( srollUp && navbarMenu.getBoundingClientRect().top > 70){
-    //
-    //
-    //     navbarMenu.classList.remove("relative");
-    //     navbarMenu.classList.add("fixed");
-    //     navbarMenu.style = "";
-    //     navbarMenu.style.top = "0px";
-    //     fixedBottom = false;
-    //     fixedTop = true;
-    //     window.removeEventListener("scroll",fixNavbar)
-    //     window.addEventListener("scroll",unfixNavBar)
-    //
-    // }
+
+        function unbind (){
+
+            navbarMenu.classList.remove("fixed");
+            navbarMenu.classList.add("relative");
+            navbarMenu.style = "";
+
+            fixedBottom = false;
+            fixedTop = false;
 
 
+            window.addEventListener("scroll",fixNavbar);
+            window.removeEventListener("scroll",unfixNavBar);
+        }
 
     function unfixNavBar () {
 
         var top = (+window.pageYOffset + +navbarMenu.getBoundingClientRect().top);
-
-
-            console.log(listenTo.getResult())
-
-
-
-            if (srollUp && fixedBottom ){
-
-
-                navbarMenu.classList.remove("fixed");
-                navbarMenu.classList.add("relative");
-                navbarMenu.style = "";
-                navbarMenu.style.top = top+"px";
-                fixedBottom = false;
-                fixedTop = false;
-                console.log(top);
-
-                window.addEventListener("scroll",fixNavbar);
-                window.removeEventListener("scroll",unfixNavBar);
-
-            }else if (scrollDown && fixedTop || listenTo.getResult()) {
-
-                navbarMenu.classList.remove("fixed");
-                navbarMenu.classList.add("relative");
-                navbarMenu.style = "";
+        console.log(listenTo.getResult())
+        if (srollUp && fixedBottom ){
+            unbind ()
+            navbarMenu.style.top = top+"px";
+        }else if (scrollDown && fixedTop || listenTo.getResult()) {
+                unbind ()
                 navbarMenu.style.top = (top-150)+"px";
-                fixedBottom = false;
-                fixedTop = false;
-                window.addEventListener("scroll",fixNavbar);
-                window.removeEventListener("scroll",unfixNavBar)
-
-            }
-                // else if (listenTo.result()) {
-            //     navbarMenu.classList.remove("fixed");
-            //     navbarMenu.classList.add("relative");
-            //     navbarMenu.style = "";
-            //     navbarMenu.style.top =  (top-150)+"px";
-            //     fixedBottom = false;
-            //     fixedTop = false;
-            //     console.log(top);
-            //
-            //     window.addEventListener("scroll",fixNavbar);
-            //     window.removeEventListener("scroll",unfixNavBar);
-            // }
-
+        }
     }
 //========================================================
-
+//  switch colors
 //========================================================
 
 
@@ -219,13 +171,8 @@
 
     window.addEventListener("load",function(){
         if(window.location.hash){
-
-
             check();
-
-
             li.forEach(function(element){
-
                 if(element.parentNode.getAttribute("href") === window.location.hash){
                     element.classList.add("active")
                 }
@@ -234,7 +181,6 @@
     });
 
     function check(){
-
         li.forEach(function(element){
             if(element.classList.contains("active") ){
                 element.classList.remove("active")
@@ -243,15 +189,12 @@
 
 
      li.forEach(function(element){
-
          element.addEventListener("click",function(e){
-
              console.log(this);
              check();
              if(!this.classList.contains("active") ){
                  this.classList.add("active")
              }
-
          })
      })
 
