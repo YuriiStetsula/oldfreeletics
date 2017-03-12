@@ -1,5 +1,5 @@
 <% include partials/header%>
-<div class="wrappper">
+<div class="wrapper">
 
     <div class="container">
         <div class="row">
@@ -17,7 +17,7 @@
                 <% if (workoutName === "IRIS"){%>
                 <div class="content-wrapper">
                     <div class="id" id="<%=workoutName.toLowerCase()%>"> </div>
-                    <table class="table table-striped table-bordered table-hover">
+                    <table class="table table-striped  table-hover">
                         <thead>
                         <tr>
                             <td colspan="2" class="info text-center">
@@ -35,7 +35,7 @@
 
                         <% workout.exercices.forEach(function(exe){%>
                         <tr>
-                            <td><a href="/exercises/<%=exe.name.toLowerCase()%>"><%=exe.name%></a></td>
+                            <td><a href="/exercises/#<%=exe.name.toLowerCase()%>"><%=exe.name%></a></td>
                             <td> <%=exe.rounds%></td>
                         </tr>
 
@@ -51,7 +51,8 @@
 
                 <div class="container-wrapper">
                     <div class="id" id="<%=workoutName.toLowerCase()%>"></div>
-                    <table class="table table-striped table-bordered table-hover" >
+
+                    <table class="table table-striped  table-hover" >
                         <thead>
                         <tr>
                             <td colspan="2" class="info text-center">
@@ -59,7 +60,7 @@
                             </td>
                         </tr>
                         </thead>
-                        <tr>
+                        <tr >
                             <%if(workout.exercices[0].rounds.length === 1 ){%>
                             <td colspan="2"><b> <%=workout.exercices[0].rounds.length%> Round</b></td>
 
@@ -71,7 +72,7 @@
 
                         <% workout.exercices.forEach(function(exe){%>
                         <tr>
-                            <td><a href="/exercises/#<%=exe.name.toLowerCase()%>"><%=exe.name%></a></td>
+                            <td><a href="/exercises#<%=exe.name.toLowerCase()%>"><%=exe.name%></a></td>
                             <td> <%=exe.rounds%></td>
                         </tr>
 
@@ -92,5 +93,16 @@
 
 </div>
 
+<script>
+   window.onload = function(){
+       (function () {
+         console.log( $("a").each(function(i){
+             $(this).attr("href",$(this).attr("href").replace(" ",""))
+             $(this).attr("href",$(this).attr("href").replace( /\w\D+max/ig,"exercises#max"))
+             $(this).attr("href",$(this).attr("href").replace( /hspushups/ig,"handstandpushup"))
+         }))
+       }())
+   }
+</script>
 
 <% include partials/footer%>
