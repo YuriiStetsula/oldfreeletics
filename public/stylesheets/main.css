@@ -1,3 +1,5 @@
+
+
 .wrapper{
     padding-top: 70px;
 }
@@ -8,10 +10,18 @@
 
 .fixed{
     position : fixed;
-    width : 250px;
-    top: 0;
+    width:200px
+
 }
 
+.relative{
+    position: relative;
+    width:200px
+}
+/*.fixed:after{*/
+   /*display: table;*/
+    /*clear: both;*/
+/*}*/
 .id {
     height:70px;
     visibility: hidden;
@@ -19,6 +29,7 @@
 
 .list-group{
     margin-top:70px;
+    font-size: 1.4rem;
 }
 
 .list-group a {
@@ -28,4 +39,23 @@
 .list-group li:hover {
     color: black;
     background: #d9edf7;
+}
+
+.panel, table {
+    font-size: 1.2em;
+}
+
+.margin_top_20 {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+footer{
+    background-color: #101211;
+    height: 5vh;
+    margin-top: 100px;
+}
+
+.overflow{
+    overflow-y: scroll;
 }
