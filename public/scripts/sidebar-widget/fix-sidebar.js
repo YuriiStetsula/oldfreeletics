@@ -1,7 +1,12 @@
 (function(){
-    var  widget = "fixedNav"
-    if (document.getElementById(widget)) {
-        var myFixSidebarWidget = new app.FixSidebar("fixedNav","main_footer")
+    var  sidebarID = "fixedNav",
+         footerID  = "main_footer";
+
+    if (document.getElementById(sidebarID)) {
+        var myFixSidebarWidget = new app.FixSidebar(sidebarID,footerID)
     }
+
+
+
 
 }())
