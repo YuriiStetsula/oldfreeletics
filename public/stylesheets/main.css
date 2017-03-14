@@ -1,8 +1,25 @@
 
-
+html,
+body{
+ height: 100%;
+}
 .wrapper{
     padding-top: 70px;
+
 }
+
+
+.content {
+    box-sizing: border-box;
+    min-height: 100%;
+    padding-bottom: 90px;
+}
+footer {
+    height: 80px;
+    margin-top: -80px;
+    background-color: #101211;
+}
+
 .brownBackground {
     background-color: #101211;
     color: #fff;
@@ -18,10 +35,7 @@
     position: relative;
     width:200px
 }
-/*.fixed:after{*/
-   /*display: table;*/
-    /*clear: both;*/
-/*}*/
+
 .id {
     height:70px;
     visibility: hidden;
@@ -50,11 +64,11 @@
     font-weight: bold;
 }
 
-footer{
-    background-color: #101211;
-    height: 5vh;
-    margin-top: 100px;
-}
+/*footer{*/
+    /**/
+    /*height: 5vh;*/
+    /*margin-top: 100px;*/
+/*}*/
 
 .overflow{
     overflow-y: scroll;
