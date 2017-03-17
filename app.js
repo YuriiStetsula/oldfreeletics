@@ -9,7 +9,7 @@ var express     = require ("express"),
 
 var strengthRoute = require ("./routes/strength"),
     cardioRoute   = require ("./routes/cardio"),
-    cardioandstrengthRoute = require ("./routes/cardio"),
+    cardioandstrengthRoute = require ("./routes/cardioandstrength"),
     workoutsRoute = require ("./routes/workouts"),
     exercisesRoute = require ("./routes/exercises");
 
@@ -45,6 +45,6 @@ app.use(express.static(__dirname + "/public"));
 
 
 
-app.listen(4001,function(){
+app.listen(process.env.PORT,process.env.IP,function(){
      console.log("server starded!")
 })

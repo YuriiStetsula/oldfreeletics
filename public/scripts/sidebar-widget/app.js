@@ -29,9 +29,9 @@
 
     NavWidget.prototype.setStyles = function (styles,styleName) {
         for ( prop in styles){
-         if (prop === styleName) {
-             return (styles[prop])
-         }
+            if (prop === styleName) {
+                return (styles[prop])
+            }
         }
     }
 
@@ -70,7 +70,7 @@
                         // BIND TO CLIENT TOP (within header height) WHEN SIDEBAR TOP REACHED IT
                         this.fixToTop();
                     }
-                    if (this.sticky && this.getCoords(this.navbarMenu).bottom  > this.getCoords(this.footer).top ){
+                    if (this.sticky && this.getCoords(this.navbarMenu).bottom  > this.getCoords(this.footer).top-50 ){
                         // UNBIND SIDEBAR WHEN IT REACHES FOOTER
                         this.unFix()
 
@@ -89,7 +89,7 @@
                         this.navbarMenu.style.bottom = "0px";
 
                     }
-                    if (this.sticky && this.getCoords(this.navbarMenu).bottom  > this.getCoords(this.footer).top ){
+                    if (this.sticky && this.getCoords(this.navbarMenu).bottom  > this.getCoords(this.footer).top-50 ){
                         // UNBIND WHEN SIDEBAR REACHES FOOTER
                         this.unFix()
                         if ( !this.reachedFooter){
@@ -127,7 +127,7 @@
                     }
                 }else {
                     // behavior for sidebar when it height + start postion top is grater than window client height
-                    if (this.navbarMenu.classList.contains("fixed")  && this.navbarMenu.style.bottom ){
+                    if (this.sticky  && this.navbarMenu.style.bottom ){
                         // SCROLLING UP TO UNBIND FROM BOTTOM
                         this.unFix()
                     }
@@ -143,6 +143,7 @@
                         // UNBIND FROM CLIENT WINDOW TOP WHEN REACHED HEADER OR UPPER ELEMENT
                         this.unFix()
                     }
+
                 }
 
 
@@ -159,6 +160,7 @@
         }
         this.navbarMenu.style = "";
         this.navbarMenu.style.width = this.elementWidth
+        this.navbarMenu.style.margin = "0px"
         this.navbarMenu.classList.add("fixed")
         this.navbarMenu.style.top = this.header.clientHeight+"px";
         this.sticky = true;
@@ -195,7 +197,7 @@
 
             }
         } else return false
-        }
+    }
 
 
 
@@ -204,5 +206,3 @@
     global.app.FixSidebar = NavWidget
 
 })(window);
-
-
