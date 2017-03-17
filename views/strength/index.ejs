@@ -11,8 +11,7 @@
 
                 <div  class="list-group text-center " >
                     <h1 id="upper_elemnt">strength guide</h1>
-                    <div id="fixedNav" class="relative">
-
+                    <div id="fixedNav">
                         <%guide.forEach(function(week){%>
                         <a href="#week<%=week.week%>"><li class="list-group-item"> week   <%=week.week%></li></a>
                         <% })%>
@@ -44,7 +43,6 @@
                             <%}else{%>
                             <span class="text-warning"><%= session.exercises[val]%></span>
                             <%}%>
-
                             <%   }%>
                             <%  })%>
 
@@ -58,6 +56,9 @@
                 <%})%>
 
             </div>
+
+
+
         </div>
     </div>
 
