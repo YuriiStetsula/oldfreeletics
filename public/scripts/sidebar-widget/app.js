@@ -1,176 +1,232 @@
 ;(function (global) {
 
-    var NavWidget = function(id,footer){
+    var NavWidget = function(object){
 
-        this.navbarMenu = document.getElementById(id);
-        this.footer = document.getElementById(footer)
+        this.navbarMenu = document.getElementById(object.sidebarID);
+        // this.prevSibling = this.getPrevSibling(this.navbarMenu)
 
-        this.startPosition  = this.navbarMenu.getBoundingClientRect()
+
+
+        this.header = document.getElementById(object.headerID)
+        this.footer = document.getElementById(object.footerID)
+
+        this.upperElemnt = document.getElementById(object.upperElement)
+
+        this.unBindPosition = this.getCoords(this.upperElemnt).bottom || this.header.getBoundingClientRect().bottom
+        this.elementStartPostion = this.getCoords(this.navbarMenu).top
+
+        // this.stickyBinded = this.sticky.bind(this)
+        this.scroll = this.scrollDirection.bind(this)
+        this.scrolled = 0;
+        this.scrollTop = false ;
         this.scrollDown = false ;
-        this.srollUp = false ;
-        this.fixedBottom = false;
-        this.fixedTop = false;
-        this.scrolling = window.pageYOffset;
-        this.clientWidth = document.documentElement.clientWidth;
+        this.sticky = false ;
+        this.reachedFooter = false;
+        this.dontCatch = false
+        this.handleForEvents()
 
-        this.handalingForEvents()
+        this.navbarPositionBottom = this.getCoords(this.navbarMenu).bottom
+        this.navbarPositionTop = this.getCoords(this.navbarMenu).top
+
+
 
     }
 
 
-    NavWidget.prototype.handalingForEvents = function () {
+    NavWidget.prototype.handleForEvents = function (){
+        // window.addEventListener("scroll",this.stickyBinded,false)
+        window.addEventListener("scroll",this.scroll,false)
+    }
+    NavWidget.prototype.scrollDirection = function () {
 
-        window.addEventListener("resize", function(){
 
-            // var top = (+window.pageYOffset + +this.navbarMenu.getBoundingClientRect().top);
-            this.clientWidth = document.documentElement.clientWidth;
-            this.unbind ()
+        if (window.pageYOffset > this.scrolled){
 
-            // this.navbarMenu.style.top = (top-150)+"px";
-            console.log("resized")
+            console.log(this.navbarPositionBottom )
 
-            if(this.clientWidth < 990 ){
-                this.navbarMenu.style = ""
-                console.log(this.navbarMenu.classList)
-                this.navbarMenu.classList.remove("fixed");
-                this.navbarMenu.classList.remove("relative");
-                window.removeEventListener("scroll",this.fixNavbar.bind(this));
-                window.removeEventListener("scroll",this.unfixNavBar.bind(this));
+            this.scrollTop = false;
+            this.scrollDown = true;
+            this.scrolled = window.pageYOffset
+            // if (this.navbarMenu.classList.contains("fixed") && window.pageYOffset+document.documentElement.clientHeight  > this.getCoords(this.footer).top ){
+            //     alert(1)
+            // }
+            if (this.sidebarVisible()){
+                // BIND TO CLIENT TOP (within header height) WHEN SIDEBAR TOP REACHED IT
+                if (!this.sticky && window.pageYOffset > this.getCoords(this.navbarMenu).top ){
+                    this.navbarMenu.classList.remove("relative");
+                    this.navbarMenu.style = ""
+                    this.navbarMenu.classList.add("fixed");
+                    this.navbarMenu.style.top = this.header.clientHeight+"px";
+                    console.log("ahah")
+                    this.sticky = true;
+                }
+                if (this.navbarMenu.classList.contains("fixed") && this.getCoords(this.navbarMenu).bottom  > this.getCoords(this.footer).top ){
+                 // UNBIND SIDEBAR WHEN IT REACHES FOOTER
+                    console.log("+++++++++++++++++++++++++++++++++")
+                    var top = this.getCoords(this.navbarMenu).top
+                    this.navbarMenu.classList.remove("fixed")
+                    this.sticky = false;
+                    this.reachedFooter = true;
+                    this.navbarMenu.classList.add("relative")
+                    this.navbarMenu.style.top =  top-this.navbarPositionTop+"px";
+                }
+            }else {
 
-            }else if(this.clientWidth > 990  ){
-                window.addEventListener("scroll",this.fixNavbar.bind(this));
+                if (!this.reachedFooter  &&  this.navbarMenu.getBoundingClientRect().bottom < document.documentElement.clientHeight ){
+                    // BIND TO WINDOW BOTTOM
+                    this.navbarMenu.classList.remove("relative")
+                    this.navbarMenu.style = "";
+                    this.navbarMenu.classList.add("fixed");
+
+                    this.navbarMenu.style.bottom = "0px";
+                    console.log("WOOOOOOOOOOOOW")
+                    this.sticky = true;
+                }
+                if (this.navbarMenu.classList.contains("fixed") && this.getCoords(this.navbarMenu).bottom  > this.getCoords(this.footer).top ){
+                    // UNBIND WHEN SIDEBAR REACHES FOOTER
+                    console.log("+++++++++++++++++++++++++++++++++")
+                    var top = this.getCoords(this.navbarMenu).top
+                    this.navbarMenu.classList.remove("fixed")
+                    this.navbarMenu.style = "";
+                    this.sticky = false;
+                    this.reachedFooter = true;
+                    this.navbarMenu.classList.add("relative")
+                    this.navbarMenu.style.top =  top-this.navbarPositionTop+"px";
+                }
+                if (this.sticky && this.navbarMenu.style.top){
+                    // UNBIND FROM  WINDOW TOP
+                    var top = this.getCoords(this.navbarMenu).top
+                    this.navbarMenu.classList.remove("fixed")
+                    this.navbarMenu.style = ""
+                    this.navbarMenu.classList.add("relative")
+                    this.navbarMenu.style.top = top-this.navbarPositionTop+"px";
+                    this.sticky = false
+                }
             }
-        }.bind(this));
-
-        window.addEventListener("scroll",this.fixNavbar.bind(this));
-    }
-// scroll functions
-    NavWidget.prototype.scrollToTop = function (callback){
-
-        if (window.pageYOffset < this.scrolling){
-            // console.log("scrolling up")
-            this.scrolling = window.pageYOffset;
-            this.scrollDown = false ;
-            this.srollUp = true ;
-            callback.call(this);;
-        }
-    }
-
-    NavWidget.prototype.scrollToBottom = function (callback){
-
-        if (window.pageYOffset > this.scrolling){
-            // console.log("scrolling down!!")
-            this.scrolling = window.pageYOffset;
-            this.scrollDown = true ;
-            this.srollUp = false ;
-            callback.call(this);
-        }
 
 
-    }
 
-// fix navbar
-    NavWidget.prototype.bind = function(){
 
-        // adding styles for nailing
-        this.navbarMenu.classList.remove("relative");
-        this.navbarMenu.classList.add("fixed");
-        this.navbarMenu.style = "";
-        window.removeEventListener("scroll",this.fixNavbar.bind(this));
-        window.addEventListener("scroll",this.unfixNavBar.bind(this))
-    }
+        }else if (window.pageYOffset < this.scrolled){
 
-    NavWidget.prototype.fixNavbar = function (){
-
-        // cheking if client width is grater than 990px
-        if( this.clientWidth > 990){
-
-            // cheking if element height is grater than document height
-            if (this.navbarMenu.getBoundingClientRect().height-15+this.startPosition.top  > document.documentElement.clientHeight  ){
-
-                // cheking if scrolling down and reached client bootom , binding to bottom
-                this.scrollToBottom(function(){
-                    if( this.navbarMenu.getBoundingClientRect().bottom <  document.documentElement.clientHeight ){
-                        this.bind()
-                        this.navbarMenu.style.bottom = "0px";
-                        this.fixedBottom = true;
-                        this.fixedTop = false;
-                    }
-                });
-
-                // cheking if scrolling up  and reached client top , binding to top
-                this.scrollToTop(function(){
-                    if ( this.navbarMenu.getBoundingClientRect().top > 70){
-                        // console.log("scrolling uo!!")
-                        this.bind()
-                        this.navbarMenu.style.top = "0px";
-                        this.fixedBottom = false;
-                        this.fixedTop = true;
-                    }
-                })
-
-                // else if navbar height is grater or equal than clientheight
-            }else  if(this.navbarMenu.getBoundingClientRect().height <= document.documentElement.clientHeight){
-                // when  navbar hidden
-                // if(-this.navbarMenu.getBoundingClientRect().top > this.navbarMenu.getBoundingClientRect().height){
-                    // fix to client  top
-                    this.scrollToBottom(function(){
-                        if(-this.navbarMenu.getBoundingClientRect().top > this.navbarMenu.getBoundingClientRect().height) {
-                            this.bind()
-                            this.navbarMenu.style.top = "0px"
-                        }
-                    })
-
-                    this.scrollToTop(function(){
-                        if ( this.srollUp && this.navbarMenu.getBoundingClientRect().top > 70) {
-                            this.bind()
-                            this.navbarMenu.style.top = "0px";
-                        }
-                    })
+            console.log("scroll up")
+            this.scrolled = window.pageYOffset
+            this.scrollTop = true;
+            this.scrollDown = false;
+            if(this.sidebarVisible()){
+                if (this.sticky && window.pageYOffset < this.unBindPosition){
+                    // UNBIND FROM CLIENT WINDOW TOP WHEN REACHED HEADER OR UPPER ELEMENT
+                    console.log("coool========")
+                    var top = this.getCoords(this.navbarMenu).top
+                    this.navbarMenu.classList.remove("fixed")
+                    this.navbarMenu.style = "";
+                    this.navbarMenu.classList.add("relative");
+                    this.navbarMenu.style.top = top-this.navbarPositionTop +"px"
+                    this.sticky = false;
+                }
+                if ( this.reachedFooter && this.getCoords(this.navbarMenu).top > this.header.getBoundingClientRect().bottom ){
+                    // BIND TO TOP WHEN SCROLLING UP ,AFTER this.reachedFooter = true
+                    this.navbarMenu.classList.remove("relative")
+                    this.navbarMenu.classList.add("fixed");
+                    console.log("==============================================")
+                    this.navbarMenu.style.top = this.header.clientHeight+"px";
+                    this.reachedFooter = false;
+                    this.sticky = true;
+                }
+            }else {
+                if (this.navbarMenu.classList.contains("fixed")  && this.navbarMenu.style.bottom ){
+                // SCROLLING UP TO UNBIND FROM BOTTOM
+                    console.log("coool========")
+                    var top = this.getCoords(this.navbarMenu).top
+                    this.navbarMenu.style = ""
+                    this.navbarMenu.classList.remove("fixed")
+                    this.navbarMenu.classList.add("relative")
+                    this.navbarMenu.style.top = top-this.navbarPositionTop +"px"
+                    this.sticky = false;
+                }
+                // if ( this.reachedFooter && this.navbarMenu.getBoundingClientRect().top > this.header.getBoundingClientRect().bottom ){
+                //       // BIND TO TOP WHEN SCROLLING UP ,AFTER this.reachedFooter = true
+                //     this.navbarMenu.style = ""
+                //     this.navbarMenu.classList.remove("relative")
+                //     this.navbarMenu.classList.add("fixed");
+                //     console.log("zzzzzzzzzzzz")
+                //     this.navbarMenu.style.top = this.header.clientHeight+"px";
+                //     this.reachedFooter = false;
+                //     this.sticky = true;
+                // }
+                if (!this.sticky && this.navbarMenu.getBoundingClientRect().top > 0 ) {
+                    //BIND TO of CLIENT WINDOW TOP WHEN SCROLLING UP
+                    this.navbarMenu.style = "";
+                    this.navbarMenu.classList.remove("relative")
+                    this.navbarMenu.classList.add("fixed")
+                    this.navbarMenu.style.top = this.header.clientHeight+"px";
+                    this.sticky = true;
+                    this.reachedFooter = false;
+                }
+                if (this.sticky && window.pageYOffset < this.header.getBoundingClientRect().bottom){
+                    // UNBIND FROM CLIENT WINDOW TOP WHEN REACHED HEADER
+                    console.log("superpeupr========")
+                    var top = this.getCoords(this.navbarMenu).top
+                    this.navbarMenu.classList.remove("fixed")
+                    this.navbarMenu.style = "";
+                    this.navbarMenu.classList.add("relative");
+                    this.navbarMenu.style.top = top-this.navbarPositionTop +"px"
+                    this.sticky = false;
+                }
             }
+
+
+
+
+        }
+
+
+
+    }
+
+
+    NavWidget.prototype.sidebarVisible = function (){
+        if ( this.navbarMenu.clientHeight + this.navbarPositionTop < document.documentElement.clientHeight ){
+            return true
+        }else {
+            return false
         }
     }
 
-    NavWidget.prototype.unbind = function () {
-        // remove position fixed
-        var top = (+window.pageYOffset + +this.navbarMenu.getBoundingClientRect().top);
-
-        this.navbarMenu.classList.remove("fixed");
-        this.navbarMenu.classList.add("relative");
-        this.navbarMenu.style = "";
-
-        this.fixedBottom = false;
-        this.fixedTop = false;
-
-        this.navbarMenu.style.top = (top-150)+"px";
-
-        window.removeEventListener("scroll",this.unfixNavBar.bind(this));
-        window.addEventListener("scroll",this.fixNavbar.bind(this));
-
-    }
-
-    NavWidget.prototype.unfixNavBar = function () {
-        // get top position for navbar
-
-
-        if ( this.srollUp &&  this.fixedBottom ){
-            // unbind if scrolling up and navbar fixed to bottom
-            this.unbind () ;
+    // NavWidget.prototype.sticky = function () {
+    //
+    //     if (document.documentElement.clientWidth > 990){
+    //         // if navbar height is less then clientheight
+    //         if ( this.navbarMenu.clientHeight + this.getCoords(this.navbarMenu).top < document.documentElement.clientHeight ){
+    //
+    //            else
+    //             if (this.navbarMenu.classList.contains("fixed") && window.pageYOffset+document.documentElement.clientHeight  > this.getCoords(this.footer).top ){
+    //                 alert(1)
+    //             }
+    //
+    //         }
+    //
+    //
+    //     }
+    //
+    //
+    //
+    //
+    // }
 
 
-        } else if ( this.scrollDown &&  this.fixedTop ) {
-            // unbind if scrolling down and navbar fixed to top
-            this.unbind ();
-
-
-        } else if (this.scrollDown  && this.navbarMenu.getBoundingClientRect().bottom  > this.footer.getBoundingClientRect().top-10  ){
-            // remove postion fixed when navbar reached footer
-            // console.log("yes")
-            this.unbind ();
-            // this.navbarMenu.style.top = (window.pageYOffset - this.navbarMenu.getBoundingClientRect().height/1.2 )+"px";
+    NavWidget.prototype.getCoords = function (element) {
+        if (element){
+            var elCoords = element.getBoundingClientRect();
+            return {
+                top: elCoords.top + window.pageYOffset,
+                bottom : elCoords.bottom + window.pageYOffset,
+                left : elCoords.left + window.pageXOffset,
+                right : elCoords.right + window.pageXOffset,
+                height : elCoords.height + window.pageYOffset
+            }
+        } else return false
         }
-    }
-
 
 
     global.app = global.app || {};

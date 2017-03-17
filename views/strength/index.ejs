@@ -9,11 +9,15 @@
 
             <div class="col-md-3" >
 
-                <div  class="list-group text-center " id="fixedNav">
-                    <h1>strength guide</h1>
-                    <%guide.forEach(function(week){%>
-                    <a href="#week<%=week.week%>"><li class="list-group-item"> week   <%=week.week%></li></a>
-                    <% })%>
+                <div  class="list-group text-center " >
+                    <h1 id="upper_elemnt">strength guide</h1>
+                    <div id="fixedNav" class="relative">
+
+                        <%guide.forEach(function(week){%>
+                        <a href="#week<%=week.week%>"><li class="list-group-item"> week   <%=week.week%></li></a>
+                        <% })%>
+                    </div>
+
                 </div>
 
             </div>

@@ -1,4 +1,4 @@
-<% include partials/header%>
+<% include ../partials/header%>
 
 
     <div class="container">
@@ -96,13 +96,13 @@
 <script>
    window.onload = function(){
        (function () {
-         console.log( $("a").each(function(i){
+        $("a").each(function(i){
              $(this).attr("href",$(this).attr("href").replace(" ",""))
              $(this).attr("href",$(this).attr("href").replace( /\w\D+max/ig,"exercises#max"))
              $(this).attr("href",$(this).attr("href").replace( /hspushups/ig,"handstandpushup"))
-         }))
+         })
        }())
    }
 </script>
 
-<% include partials/footer%>
+<% include ../partials/footer%>
